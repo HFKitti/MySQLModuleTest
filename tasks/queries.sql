@@ -32,6 +32,8 @@ Jó munkát!
 
     Elvárt eredmény:
         -1523
+
+        SELECT MIN(`country`.`IndepYear`) FROM `country`;
 */
 
 
@@ -44,6 +46,9 @@ Jó munkát!
 
     Elvárt eredmény:
         CHN Code-ú ország (China)
+
+       SELECT * FROM `country` WHERE `IndepYear` = (SELECT MIN(`IndepYear`) FROM `country`);
+
 */
 
 
@@ -56,6 +61,8 @@ Jó munkát!
         550 rekord
         ID szerint növekvő sorrendben az első 5 darab: 2, 3, 8, 11, 34
         ID szerint növekvő sorrendben az utolsó 3 darab: 4076, 4078, 4079
+
+        SELECT * FROM `city` WHERE `District` LIKE `Name`;
 */
 
 
@@ -68,6 +75,17 @@ Jó munkát!
     Elvárt eredmény:
         7 rekord
         országnevek: Bangladesh, Bahrain, Kuwait, Mauritania, Qatar, Sudan, Sierra Leone
+
+        SELECT * FROM `country` WHERE
+        `HeadOfState` LIKE '%Ahmad%' OR
+        `HeadOfState` LIKE 'Ahmad%' OR
+        `HeadOfState` LIKE '%Ahmad' OR
+        `HeadOfState` LIKE '%Ahmed%' OR
+        `HeadOfState` LIKE 'Ahmed%' OR
+        `HeadOfState` LIKE '%Ahmed' OR
+        `HeadOfState` LIKE '%Hamad%' OR
+        `HeadOfState` LIKE 'Hamad%' OR
+        `HeadOfState` LIKE '%Hamad';
 */
 
 
@@ -80,6 +98,8 @@ Jó munkát!
     Elvárt eredmény:
         10 rekord
         kontinensek: Oceania (7 db), Europe (2), South America (1)
+
+        SELECT * FROM `country` WHERE `LifeExpectancy` IS NULL AND `Population` != 0;
 */
 
 
@@ -91,6 +111,8 @@ Jó munkát!
 
     Elvárt eredmény:
         63 rekord
+
+        SELECT `Code`,`Name`,`GNP`,`GNPOld` FROM `country` WHERE `GNP` < `GNPOld`;
 */
 
 
@@ -102,6 +124,8 @@ Jó munkát!
 
     Elvárt eredmény:
         29 rekord
+
+        SELECT * FROM `countrylanguage` WHERE `Language` LIKE '%ian' GROUP BY `Language` ORDER BY `Language` ASC;
 */
 
 
@@ -115,6 +139,8 @@ Jó munkát!
         Southern Europe: 15
         Western Europe: 9
         Eastern Europe 10
+
+        SELECT `Region`, COUNT(`country`.`Region`) FROM `country` WHERE `Region` LIKE '%Europe%' GROUP BY `Region`;
 */
 
 
@@ -129,6 +155,11 @@ Jó munkát!
         239 rekord
         első országkód: AFG
         utolsó országkód: ZWE
+
+       SELECT `Code`,`country`.`Name`, `city`.`Name`
+       FROM `country`
+       LEFT JOIN `city` ON `country`.`Capital` = `city`.`ID`
+       ORDER BY `country`.`Name` ASC;
 */
 
 
@@ -140,6 +171,8 @@ Jó munkát!
     Elvárt eredmény:
         10 rekord
         a városok ID-ja: 61, 62, 1791, 2316, 2317, 2728, 2805, 2806, 3333, 3538
+
+        SELECT * FROM `city` WHERE `Population` LIKE '___';
 */
 
 
@@ -153,6 +186,15 @@ Jó munkát!
     Elvárt eredmény:
         35 rekord
         országkódok, amelyek szerepelnek a listában: DNK, FIN, FRO, ISL, NOR, SJM, SWE
+
+
+       SELECT `city`.`ID`, `city`.`Name`, `city`.`CountryCode`, `city`.`District`, `city`.`Population`
+       FROM `city`
+       INNER JOIN `country`
+       ON `city`.`CountryCode` = `country`.`Code`
+       WHERE `country`.`Region` LIKE '%Nordic Countries%'
+       ORDER BY `country`.`Code` ASC,
+        `country`.`Population` DESC;
 */
 
 
@@ -168,6 +210,11 @@ Jó munkát!
         19 rekord
         legkisebb: Northern Africa (1)
         legnagyobb: Caribbean (11)
+
+        SELECT `Region`,COUNT(`Region`)
+        FROM `country` WHERE `IndepYear` IS NULL OR `IndepYear` < 1500
+        GROUP BY `Region`
+        ORDER BY COUNT(`Region`) DESC;
 */
 
 
@@ -179,6 +226,13 @@ Jó munkát!
     Elvárt eredmény:
         16 rekord
         országkódok: ABW, ANT, BHR, BRN, COK, DNK, ISL, JPN, KWT, MAC, MCO, MDV, MYS, NOR, PRI, TTO
+
+
+        SELECT * FROM `country`
+        INNER JOIN `countrylanguage`
+        ON `countrylanguage`.`CountryCode` = `country`.`Code`
+        WHERE `countrylanguage`.`Language` LIKE 'English'
+        AND `countrylanguage`.`IsOfficial` = 'F';
 */
 
 
@@ -190,6 +244,12 @@ Jó munkát!
     Elvárt eredmény:
         7 rekord
         országkódok: ATA, ATF, BVT, HMD, IOT, SGS, UMI
+
+       SELECT *
+       FROM `city`
+       RIGHT JOIN `country`
+       ON `city`.`CountryCode` = `country`.`Code`
+       WHERE `city`.`Name` IS NULL;
 */
 
 
@@ -201,6 +261,12 @@ Jó munkát!
 
     Elvárt eredmény:
         65 rekord
+
+        SELECT *
+        FROM `city`
+        RIGHT JOIN `country`
+        ON `city`.`CountryCode` = `country`.`Code`
+        WHERE `city`.`Name` IS NULL;
 */
 
 
